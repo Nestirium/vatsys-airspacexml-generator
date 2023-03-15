@@ -4,17 +4,21 @@ import dev.nest.vatsystools.Point;
 import dev.nest.vatsystools.ProjectionTool;
 import dev.nest.vatsystools.objects.Airport;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * LinkedHashMap used because there cannot be duplicate airport key names.
  */
 public class Airports extends LinkedHashMap<String, Airport> {
 
-/*
+    private final LinkedHashMap<String, Airport> nonRelevantAirports;
+
+    public Airports() {
+
+        this.nonRelevantAirports = new LinkedHashMap<>();
+
+    }
+
     public Airports applyFilter(ArrayList<double[]> coordinates) {
         Iterator<Map.Entry<String, Airport>> airportEntryIterator = entrySet().iterator();
         while (airportEntryIterator.hasNext()) {
@@ -28,13 +32,17 @@ public class Airports extends LinkedHashMap<String, Airport> {
             double[] point = {y, x};
             boolean inside = ProjectionTool.isInsidePolygon(point, coordinates);
             if (!inside) {
+                nonRelevantAirports.put(airport.identifier(), airport);
                 airportEntryIterator.remove();
             }
         }
         return this;
     }
 
- */
+    public LinkedHashMap<String, Airport> nonRelevantAirports() {
 
+        return nonRelevantAirports;
+
+    }
 
 }

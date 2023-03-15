@@ -77,6 +77,37 @@ public class AirspaceGenerator {
             }
             airportsElement.appendChild(airportElement);
         }
+
+        for (Map.Entry<String, Airport> airportEntry : airports.nonRelevantAirports().entrySet()) {
+
+            String airportName = airportEntry.getKey();
+            Airport airport = airportEntry.getValue();
+
+            Element airportElement = doc.createElement("Airport");
+            airportElement.setAttribute("Elevation", airport.elevation());
+            airportElement.setAttribute("Name", airportName);
+
+            Point airportPosition = airport.coordinates();
+
+            airportElement.setAttribute("Position", airportPosition.latitude().asVatSys()+airportPosition.longitude().asVatSys());
+
+            for (Map.Entry<String, Airport.Runway> runwayEntry : airport.runways().entrySet()) {
+
+                String runwayName = runwayEntry.getKey();
+                Airport.Runway runway = runwayEntry.getValue();
+
+                Element runwayElement = doc.createElement("Runway");
+                runwayElement.setAttribute("Name", runwayName);
+
+                Point runwayPosition = runway.coordinates();
+
+                runwayElement.setAttribute("Position", runwayPosition.latitude().asVatSys()+runwayPosition.longitude().asVatSys());
+
+                airportElement.appendChild(runwayElement);
+            }
+            airportsElement.appendChild(airportElement);
+        }
+
         airspaceElement.appendChild(airportsElement);
         log.info("Generated XML airports.");
         return this;
@@ -87,6 +118,19 @@ public class AirspaceGenerator {
         Element intersectionsElement = doc.createElement("Intersections");
 
         for (Fix fix : fixes.values()) {
+
+            Element intersectionElement = doc.createElement("Point");
+            intersectionElement.setAttribute("Name", fix.identifier());
+            intersectionElement.setAttribute("Type", "Fix");
+
+            Point point = fix.coordinates();
+
+            intersectionElement.setTextContent(point.latitude().asVatSys()+point.longitude().asVatSys());
+
+            intersectionsElement.appendChild(intersectionElement);
+        }
+
+        for (Fix fix : fixes.nonRelevantFixes().values()) {
 
             Element intersectionElement = doc.createElement("Point");
             intersectionElement.setAttribute("Name", fix.identifier());
@@ -114,6 +158,23 @@ public class AirspaceGenerator {
 
             intersectionsElement.appendChild(intersectionElement);
         }
+
+        for (Navaid navaid : navaids.nonRelevantNavaids().values()) {
+
+            Element intersectionElement = doc.createElement("Point");
+
+            intersectionElement.setAttribute("Name", navaid.identifier());
+            intersectionElement.setAttribute("Type", "Navaid");
+            intersectionElement.setAttribute("NavaidType", navaid.navAidType().name());
+            intersectionElement.setAttribute("Frequency", navaid.frequency());
+
+            Point point = navaid.coordinates();
+
+            intersectionElement.setTextContent(point.latitude().asVatSys()+point.longitude().asVatSys());
+
+            intersectionsElement.appendChild(intersectionElement);
+        }
+
         airspaceElement.appendChild(intersectionsElement);
         log.info("Generated XML intersections.");
         return this;

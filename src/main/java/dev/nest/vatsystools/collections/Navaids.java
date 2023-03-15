@@ -1,6 +1,7 @@
 package dev.nest.vatsystools.collections;
 
 import dev.nest.vatsystools.ProjectionTool;
+import dev.nest.vatsystools.objects.Fix;
 import dev.nest.vatsystools.objects.Navaid;
 import dev.nest.vatsystools.Point;
 
@@ -11,7 +12,15 @@ import java.util.Map;
 
 
 public class Navaids extends LinkedHashMap<Point, Navaid> {
-    /*
+
+
+    private final LinkedHashMap<Point, Navaid> nonRelevantNavaids;
+
+    public Navaids() {
+
+        this.nonRelevantNavaids = new LinkedHashMap<>();
+
+    }
 
     public Navaids applyFilter(ArrayList<double[]> coordinates) {
         Iterator<Map.Entry<Point, Navaid>> navaidEntryIterator = entrySet().iterator();
@@ -30,6 +39,7 @@ public class Navaids extends LinkedHashMap<Point, Navaid> {
             boolean inside = ProjectionTool.isInsidePolygon(point, coordinates);
 
             if (!inside) {
+                nonRelevantNavaids.put(fixPoint, navaidEntry.getValue());
                 navaidEntryIterator.remove();
             }
 
@@ -37,6 +47,11 @@ public class Navaids extends LinkedHashMap<Point, Navaid> {
         return this;
     }
 
-     */
+    public LinkedHashMap<Point, Navaid> nonRelevantNavaids() {
+
+        return nonRelevantNavaids;
+
+    }
+
 
 }

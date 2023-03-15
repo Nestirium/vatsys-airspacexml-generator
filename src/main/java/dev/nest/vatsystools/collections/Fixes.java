@@ -11,7 +11,14 @@ import java.util.Map;
 
 public class Fixes extends LinkedHashMap<Point, Fix> {
 
-/*
+    private final LinkedHashMap<Point, Fix> nonRelevantFixes;
+
+    public Fixes() {
+
+        this.nonRelevantFixes = new LinkedHashMap<>();
+
+    }
+
     public Fixes applyFilter(ArrayList<double[]> coordinates) {
         Iterator<Map.Entry<Point, Fix>> fixEntryIterator = entrySet().iterator();
 
@@ -29,6 +36,7 @@ public class Fixes extends LinkedHashMap<Point, Fix> {
             boolean inside = ProjectionTool.isInsidePolygon(point, coordinates);
 
             if (!inside) {
+                nonRelevantFixes.put(fixPoint, fixEntry.getValue());
                 fixEntryIterator.remove();
             }
 
@@ -36,7 +44,10 @@ public class Fixes extends LinkedHashMap<Point, Fix> {
         return this;
     }
 
- */
+    public LinkedHashMap<Point, Fix> nonRelevantFixes() {
 
+        return nonRelevantFixes;
+
+    }
 
 }
