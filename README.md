@@ -27,5 +27,5 @@ Please note that the filtering algorithm may be inaccurate in some cases, specia
 I have fixed this by adding some buffer to the filter in the code, but I'm not sure of the reliability of this.
 If you found it unreliable (e.g missing waypoints), try adding some buffer to your FIR border before inserting the data into the tool.
 
-Finally, the SIDSTARS section is not yet supported because I couldn't properly interpret the sids.txt and stars.txt for the <Route> elements properly.
-So for now, this is left to be done manually.
+Finally, the SIDSTARS section is not yet fully supported because I couldn't properly interpret the sids.txt and stars.txt for the <Route> elements properly.
+So for now, only the declarations of the SIDs and the STARs will be generated, but no routes or transitions or approaches will be defined.
