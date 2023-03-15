@@ -85,6 +85,8 @@ public class Main {
 
             boundsFileReader.close();
 
+            sids = sids.applyFilter(airports, coordinates);
+            stars = stars.applyFilter(airports, coordinates);
             airports = airports.applyFilter(coordinates);
             fixes = fixes.applyFilter(coordinates);
             navaids = navaids.applyFilter(coordinates);
@@ -96,7 +98,8 @@ public class Main {
                 .generateAirports(airports)
                 .generateIntersections(fixes, navaids)
                 .generateSystemRunways(airports)
-                .generateAirways(airways);
+                .generateAirways(airways)
+                .generateSIDSTARS(sids, stars);
 
         //todo - generate SIDSTARS
         //C:\Users\ahman\Desktop\bounds.txt

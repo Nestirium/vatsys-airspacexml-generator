@@ -1,10 +1,7 @@
 package dev.nest.vatsystools;
 
 import ch.qos.logback.classic.Logger;
-import dev.nest.vatsystools.collections.Airports;
-import dev.nest.vatsystools.collections.Airways;
-import dev.nest.vatsystools.collections.Fixes;
-import dev.nest.vatsystools.collections.Navaids;
+import dev.nest.vatsystools.collections.*;
 import dev.nest.vatsystools.objects.*;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Comment;
@@ -314,6 +311,122 @@ public class AirspaceGenerator {
         }
         airspaceElement.appendChild(systemRunwaysElement);
         return this;
+    }
+
+    public AirspaceGenerator generateSIDSTARS(SIDS sids, STARS stars) {
+
+        Element sidStarsElement = doc.createElement("SIDSTARs");
+
+        StringBuilder runwaysString = new StringBuilder();
+
+        for (SID sid : sids) {
+
+            Element sidElement = doc.createElement("SID");
+            sidElement.setAttribute("Name", sid.identifier());
+            sidElement.setAttribute("Airport", sid.airportName());
+
+            Iterator<String> runwaysIterator = sid.associatedRunways().listIterator();
+            while (runwaysIterator.hasNext()) {
+                String rwy = runwaysIterator.next();
+                if (runwaysIterator.hasNext()) {
+                    runwaysString.append(rwy).append(",");
+                } else {
+                    runwaysString.append(rwy);
+                }
+            }
+            sidElement.setAttribute("Runways", runwaysString.toString());
+            runwaysString.setLength(0);
+            runwaysString.trimToSize();
+
+            //add more
+
+            sidStarsElement.appendChild(sidElement);
+
+        }
+
+
+
+        for (STAR star : stars) {
+
+            Element starElement = doc.createElement("STAR");
+            starElement.setAttribute("Name", star.identifier());
+            starElement.setAttribute("Airport", star.airportName());
+
+            Iterator<String> runwaysIterator = star.associatedRunways().listIterator();
+            while (runwaysIterator.hasNext()) {
+                String rwy = runwaysIterator.next();
+                if (runwaysIterator.hasNext()) {
+                    runwaysString.append(rwy).append(",");
+                } else {
+                    runwaysString.append(rwy);
+                }
+            }
+            starElement.setAttribute("Runways", runwaysString.toString());
+            runwaysString.setLength(0);
+            runwaysString.trimToSize();
+
+            //add more
+
+            sidStarsElement.appendChild(starElement);
+
+        }
+
+
+
+        for (SID sid : sids.nonRelevantSids()) {
+
+            Element sidElement = doc.createElement("SID");
+            sidElement.setAttribute("Name", sid.identifier());
+            sidElement.setAttribute("Airport", sid.airportName());
+
+            Iterator<String> runwaysIterator = sid.associatedRunways().listIterator();
+            while (runwaysIterator.hasNext()) {
+                String rwy = runwaysIterator.next();
+                if (runwaysIterator.hasNext()) {
+                    runwaysString.append(rwy).append(",");
+                } else {
+                    runwaysString.append(rwy);
+                }
+            }
+            sidElement.setAttribute("Runways", runwaysString.toString());
+            runwaysString.setLength(0);
+            runwaysString.trimToSize();
+
+            //add more
+
+            sidStarsElement.appendChild(sidElement);
+
+        }
+
+        for (STAR star : stars.nonRelevantStars()) {
+
+            Element starElement = doc.createElement("STAR");
+            starElement.setAttribute("Name", star.identifier());
+            starElement.setAttribute("Airport", star.airportName());
+
+            Iterator<String> runwaysIterator = star.associatedRunways().listIterator();
+            while (runwaysIterator.hasNext()) {
+                String rwy = runwaysIterator.next();
+                if (runwaysIterator.hasNext()) {
+                    runwaysString.append(rwy).append(",");
+                } else {
+                    runwaysString.append(rwy);
+                }
+            }
+            starElement.setAttribute("Runways", runwaysString.toString());
+            runwaysString.setLength(0);
+            runwaysString.trimToSize();
+
+            //add more
+
+            sidStarsElement.appendChild(starElement);
+
+        }
+
+        airspaceElement.appendChild(sidStarsElement);
+        log.info("Generated SIDSTARs XML.");
+        return this;
+
     }
 
 
