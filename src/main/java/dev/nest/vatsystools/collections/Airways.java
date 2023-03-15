@@ -1,49 +1,83 @@
 package dev.nest.vatsystools.collections;
 
+import dev.nest.vatsystools.Point;
+import dev.nest.vatsystools.ProjectionTool;
 import dev.nest.vatsystools.objects.Airway;
+import dev.nest.vatsystools.objects.Waypoint;
 
-import java.util.LinkedHashMap;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
-public class Airways extends LinkedHashMap<String, Airway> {
 
+public class Airways extends ArrayList<Airway> {
 
-    /*
+    private final List<Airway> nonRelevantAirways;
+
+    public Airways() {
+        this.nonRelevantAirways = new ArrayList<>();
+    }
+
     public Airways applyFilter(ArrayList<double[]> coordinates) {
-        Iterator<Map.Entry<String, Airway>> awyEntryIterator = entrySet().iterator();
 
-        while (awyEntryIterator.hasNext()) {
-            Map.Entry<String, Airway> awyEntry = awyEntryIterator.next();
-            Airway awy = awyEntry.getValue();
-            Point firstPoint = awy.waypoints().get(0).coordinates();
-            Point lastPoint = awy.waypoints().get(awy.waypoints().size()-1).coordinates();
+        Iterator<Airway> awyIterator = listIterator();
+        while (awyIterator.hasNext()) {
+            boolean inside = false;
+            Airway awy = awyIterator.next();
 
-            Point.Longitude longitude1 = firstPoint.longitude();
-            Point.Latitude latitude1 = firstPoint.latitude();
+            for (Waypoint wpt : awy.waypoints()) {
 
-            Point.Longitude longitude2 = lastPoint.longitude();
-            Point.Latitude latitude2 = lastPoint.latitude();
+                Point p = wpt.coordinates();
 
-            double x1 = Double.parseDouble(longitude1.asDecimalDegrees());
-            double y1 = Double.parseDouble(latitude1.asDecimalDegrees());
-            double[] point1 = {y1, x1};
+                double x = Double.parseDouble(p.longitude().asDecimalDegrees());
+                double y = Double.parseDouble(p.latitude().asDecimalDegrees());
+                double[] point = {y, x};
 
-            double x2 = Double.parseDouble(longitude2.asDecimalDegrees());
-            double y2 = Double.parseDouble(latitude2.asDecimalDegrees());
-            double[] point2 = {y2, x2};
+                if (ProjectionTool.isInsidePolygon(point, coordinates)) {
+                    inside = true;
+                    break;
+                }
 
-            boolean inside1 = StereographicProjection.isInsidePolygon(point1, coordinates);
-            boolean inside2 = StereographicProjection.isInsidePolygon(point2, coordinates);
+            }
 
-            if (!inside1 || !inside2) {
-                awyEntryIterator.remove();
+            if (!inside) {
+                nonRelevantAirways.add(awy);
+                awyIterator.remove();
             }
 
         }
+
+        for (Airway awy : this) {
+
+            Iterator<Waypoint> waypointIterator = awy.waypoints().listIterator();
+            while (waypointIterator.hasNext()) {
+
+                Waypoint wpt = waypointIterator.next();
+
+                Point p = wpt.coordinates();
+
+                double x = Double.parseDouble(p.longitude().asDecimalDegrees());
+                double y = Double.parseDouble(p.latitude().asDecimalDegrees());
+                double[] point = {y, x};
+
+                boolean inside = ProjectionTool.isInsidePolygon(point, coordinates);
+
+                if (!inside) {
+                    waypointIterator.remove();
+                }
+
+            }
+
+        }
+
         return this;
     }
 
-     */
+    public List<Airway> nonRelevantAirways() {
 
+        return nonRelevantAirways;
+
+    }
 
 
 }

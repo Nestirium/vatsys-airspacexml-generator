@@ -7,6 +7,7 @@ import dev.nest.vatsystools.collections.Fixes;
 import dev.nest.vatsystools.collections.Navaids;
 import dev.nest.vatsystools.objects.*;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Comment;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -48,6 +49,7 @@ public class AirspaceGenerator {
 
         Element airportsElement = doc.createElement("Airports");
 
+        airportsElement.appendChild(doc.createComment("Airports within specified filter area."));
         for (Map.Entry<String, Airport> airportEntry : airports.entrySet()) {
 
             String airportName = airportEntry.getKey();
@@ -78,6 +80,7 @@ public class AirspaceGenerator {
             airportsElement.appendChild(airportElement);
         }
 
+        airportsElement.appendChild(doc.createComment("Irrelevant remaining airports."));
         for (Map.Entry<String, Airport> airportEntry : airports.nonRelevantAirports().entrySet()) {
 
             String airportName = airportEntry.getKey();
@@ -117,6 +120,7 @@ public class AirspaceGenerator {
 
         Element intersectionsElement = doc.createElement("Intersections");
 
+        intersectionsElement.appendChild(doc.createComment("Fixes within specified filter area."));
         for (Fix fix : fixes.values()) {
 
             Element intersectionElement = doc.createElement("Point");
@@ -130,6 +134,7 @@ public class AirspaceGenerator {
             intersectionsElement.appendChild(intersectionElement);
         }
 
+        intersectionsElement.appendChild(doc.createComment("Irrelevant remaining fixes."));
         for (Fix fix : fixes.nonRelevantFixes().values()) {
 
             Element intersectionElement = doc.createElement("Point");
@@ -143,6 +148,7 @@ public class AirspaceGenerator {
             intersectionsElement.appendChild(intersectionElement);
         }
 
+        intersectionsElement.appendChild(doc.createComment("Navaids within specified filter area."));
         for (Navaid navaid : navaids.values()) {
 
             Element intersectionElement = doc.createElement("Point");
@@ -159,6 +165,7 @@ public class AirspaceGenerator {
             intersectionsElement.appendChild(intersectionElement);
         }
 
+        intersectionsElement.appendChild(doc.createComment("Irrelevant remaining navaids."));
         for (Navaid navaid : navaids.nonRelevantNavaids().values()) {
 
             Element intersectionElement = doc.createElement("Point");
@@ -180,16 +187,58 @@ public class AirspaceGenerator {
         return this;
     }
 
+
+
+
     public AirspaceGenerator generateAirways(Airways airways) {
 
         Element airwaysElement = doc.createElement("Airways");
 
         StringBuilder builder = new StringBuilder();
 
-        for (Map.Entry<String, Airway> airwayEntry : airways.entrySet()) {
+        airwaysElement.appendChild(doc.createComment("Airways within specified filter area. WAYPOINTS TRUNCATED TO AREA OF RELEVANCE."));
+        for (Airway airway : airways) {
 
-            String airwayName = airwayEntry.getKey();
-            Airway airway = airwayEntry.getValue();
+            String airwayName = airway.identifier();
+
+            Element airwayElement = doc.createElement("Airway");
+            airwayElement.setAttribute("Name", airwayName);
+
+            Iterator<Waypoint> waypointEntryIterator = airway.waypoints().iterator();
+
+            while (waypointEntryIterator.hasNext()) {
+
+                Waypoint waypoint = waypointEntryIterator.next();
+
+                String waypointName = waypoint.identifier();
+
+                if (waypoint instanceof Navaid navaid) {
+                    if (waypointEntryIterator.hasNext()) {
+                        builder.append(waypointName).append(" ").append(navaid.navAidType().name()).append("/");
+                        continue;
+                    }
+                    builder.append(waypointName).append(" ").append(navaid.navAidType().name());
+                    continue;
+                }
+
+                if (waypointEntryIterator.hasNext()) {
+                    builder.append(waypointName).append("/");
+                    continue;
+                }
+                builder.append(waypointName);
+            }
+
+            airwayElement.setTextContent(builder.toString());
+            builder.setLength(0);
+            builder.trimToSize();
+            airwaysElement.appendChild(airwayElement);
+        }
+
+
+        airwaysElement.appendChild(doc.createComment("Irrelevant remaining airways."));
+        for (Airway airway : airways.nonRelevantAirways()) {
+
+            String airwayName = airway.identifier();
 
             Element airwayElement = doc.createElement("Airway");
             airwayElement.setAttribute("Name", airwayName);
@@ -222,6 +271,7 @@ public class AirspaceGenerator {
             builder.trimToSize();
             airwaysElement.appendChild(airwayElement);
         }
+
         airspaceElement.appendChild(airwaysElement);
         log.info("Generated XML airways.");
         return this;

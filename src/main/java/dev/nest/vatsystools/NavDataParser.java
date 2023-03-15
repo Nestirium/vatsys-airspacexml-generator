@@ -131,12 +131,14 @@ public class NavDataParser {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(awysFile));
             Iterator<String> iterator = reader.lines().iterator();
+            int index = -1;
             while (iterator.hasNext()) {
                 String line = iterator.next();
                 if (line.startsWith(";")) {
                     continue;
                 }
-                String identifier = line.substring(0, 5).trim();
+                String identifier = line.substring(0, 6).trim();
+                String waypointNumber = line.substring(7, 12).trim();
                 String waypointName = line.substring(13, 18).trim();
                 String coordLatY = line.substring(33, 44).trim();
                 String coordLongX = line.substring(47, 58).trim();
@@ -145,11 +147,12 @@ public class NavDataParser {
                 Point point = new Point(latitude, longitude);
 
                 Airway navAirway;
-                if (airways.containsKey(identifier)) {
-                    navAirway = airways.get(identifier);
+                if (!waypointNumber.equals("0001")) {
+                    navAirway = airways.get(index);
                 } else {
+                    index++;
                     navAirway = new Airway(identifier);
-                    airways.put(identifier, navAirway);
+                    airways.add(navAirway);
                 }
 
                 if (fixes.containsKey(point)) {

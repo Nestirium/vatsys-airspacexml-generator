@@ -1,7 +1,6 @@
 package dev.nest.vatsystools.collections;
 
 import dev.nest.vatsystools.ProjectionTool;
-import dev.nest.vatsystools.objects.Fix;
 import dev.nest.vatsystools.objects.Navaid;
 import dev.nest.vatsystools.Point;
 
@@ -10,7 +9,9 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-
+/**
+ * Point as key because it is impossible for a navigation point coordinate to duplicate.
+ */
 public class Navaids extends LinkedHashMap<Point, Navaid> {
 
 

@@ -9,7 +9,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -19,7 +18,7 @@ public class Main {
 
     private static final Logger log = (Logger) LoggerFactory.getLogger(Main.class);
 
-    public static void main(String[] args) throws IOException, URISyntaxException {
+    public static void main(String[] args) throws IOException {
 
         Scanner input = new Scanner(System.in);
 
@@ -89,6 +88,7 @@ public class Main {
             airports = airports.applyFilter(coordinates);
             fixes = fixes.applyFilter(coordinates);
             navaids = navaids.applyFilter(coordinates);
+            airways = airways.applyFilter(coordinates);
 
         }
 
@@ -99,6 +99,7 @@ public class Main {
                 .generateAirways(airways);
 
         //todo - generate SIDSTARS
+        //C:\Users\ahman\Desktop\bounds.txt
 
         airspaceGenerator.generateXMLFile("Airspace.xml",
                 System.getProperty("user.dir"));

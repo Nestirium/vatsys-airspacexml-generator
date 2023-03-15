@@ -9,6 +9,9 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * Point as key because it is impossible for a navigation point coordinate to duplicate.
+ */
 public class Fixes extends LinkedHashMap<Point, Fix> {
 
     private final LinkedHashMap<Point, Fix> nonRelevantFixes;
