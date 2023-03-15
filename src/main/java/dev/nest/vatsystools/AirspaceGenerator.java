@@ -196,7 +196,14 @@ public class AirspaceGenerator {
 
         StringBuilder builder = new StringBuilder();
 
-        airwaysElement.appendChild(doc.createComment("Airways within specified filter area. WAYPOINTS TRUNCATED TO AREA OF RELEVANCE."));
+        airwaysElement.appendChild(doc.createComment("""
+                Airways within specified filter area.\040
+                WAYPOINTS TRUNCATED TO AREA OF RELEVANCE.
+                If you see an airway with only a single waypoint, this means that the airway starts from that single point
+                on your FIR border, and extends outside your FIR, but since the points outside your FIR are truncated, they are not included.
+                I have left them in-case you manually want to extend your airways slightly outwards your FIR.
+                The rest of the irrelevant airways are airways that do not touch your FIR by any DIRECT means.
+                """));
         for (Airway airway : airways) {
 
             String airwayName = airway.identifier();
