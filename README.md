@@ -3,9 +3,7 @@ A work in progress tool for converting VatSys NavData DFD to Airspace.xml file.
 
 LATEST version of JRE (Java Runtime Environment) is required to run this on your machine.
 
-This tool interprets & converts the navigraph DFD export plain text files located in \vatSys Files\NavData into an Airspace.xml file that VatSys can read.
-You no longer need to worry about your controllers having a navigraph subscribtion to access the navdata, nor you need to worry about manually having to update 
-the Airspace.xml file during AIRAC changes.
+This tool converts the NavData plain text files located in \vatSys Files\NavData into an Airspace.xml file that VatSys can read.
 
 The tool generates a 25-30 MB Airspace.xml file containing the converted worldwide navigation data. However, the worldwide navdata contains lots of duplicates, such as
 fixes, waypoints, navaids, airways.
