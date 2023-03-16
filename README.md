@@ -29,3 +29,6 @@ If you found it unreliable (e.g missing waypoints), try adding some buffer to yo
 
 Finally, the SIDSTARS section is not yet fully supported because I couldn't properly interpret the sids.txt and stars.txt for the <Route> elements properly.
 So for now, only the declarations of the SIDs and the STARs will be generated, but no routes or transitions or approaches will be defined.
+
+BETA feature:
+The tool also generates a Maps directory template containing the navdata that was converted, so things can be easily visualized on VatSys.
