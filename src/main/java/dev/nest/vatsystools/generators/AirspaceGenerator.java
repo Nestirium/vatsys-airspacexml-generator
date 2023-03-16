@@ -1,10 +1,10 @@
-package dev.nest.vatsystools;
+package dev.nest.vatsystools.generators;
 
 import ch.qos.logback.classic.Logger;
+import dev.nest.vatsystools.Point;
 import dev.nest.vatsystools.collections.*;
 import dev.nest.vatsystools.objects.*;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Comment;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -319,6 +319,8 @@ public class AirspaceGenerator {
 
         StringBuilder runwaysString = new StringBuilder();
 
+        sidStarsElement.appendChild(doc.createComment("SIDs and STARs within filter area."));
+
         for (SID sid : sids) {
 
             Element sidElement = doc.createElement("SID");
@@ -372,6 +374,7 @@ public class AirspaceGenerator {
         }
 
 
+        sidStarsElement.appendChild(doc.createComment("Irrelevant SIDs and STARs."));
 
         for (SID sid : sids.nonRelevantSids()) {
 

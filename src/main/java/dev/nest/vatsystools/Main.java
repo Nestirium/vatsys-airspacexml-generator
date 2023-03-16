@@ -3,6 +3,8 @@ package dev.nest.vatsystools;
 
 import ch.qos.logback.classic.Logger;
 import dev.nest.vatsystools.collections.*;
+import dev.nest.vatsystools.generators.AirspaceGenerator;
+import dev.nest.vatsystools.generators.MapsGenerator;
 import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
@@ -106,6 +108,17 @@ public class Main {
 
         airspaceGenerator.generateXMLFile("Airspace.xml",
                 System.getProperty("user.dir"));
+
+        if (filter) {
+            MapsGenerator mapsGenerator = MapsGenerator.instance();
+            mapsGenerator.generateAirports(airports, "Airports.xml");
+            mapsGenerator.generateAirways(airways, "Airways.xml");
+            mapsGenerator.generateAirwayFixes(airways, "Fixes.xml");
+            mapsGenerator.generateNavaids(navaids, "Navaids.xml");
+        } else {
+            log.info("Maps cannot be generated if no filter is provided.");
+        }
+
 
     }
 

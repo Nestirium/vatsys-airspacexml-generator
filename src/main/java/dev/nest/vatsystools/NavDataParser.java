@@ -210,7 +210,7 @@ public class NavDataParser {
                     }
                 }
             }
-            log.info("Parsed sids.");
+            log.info("Parsed sids pass.");
             reader.close();
             return sids;
         } catch (Exception e) {
