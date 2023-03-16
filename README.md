@@ -1,7 +1,7 @@
 # vatsys-airspacexml-generator
 A work in progress tool for converting VatSys NavData DFD to Airspace.xml file.
 
-Java 16 or above is required to be installed on your machine for this tool to run.
+LATEST version of JRE (Java Runtime Environment) is required to run this on your machine.
 
 This tool interprets & converts the navigraph DFD export plain text files located in \vatSys Files\NavData into an Airspace.xml file that VatSys can read.
 You no longer need to worry about your controllers having a navigraph subscribtion to access the navdata, nor you need to worry about manually having to update 
