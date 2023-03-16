@@ -18,6 +18,8 @@ as the following example:
 
 [bounds.txt](https://github.com/Nestirium/vatsys-airspacexml-generator/files/10983140/bounds.txt)
 
+You may use https://kilojuliett.ch/webtools/geo/coordinatesconverter to assist in any sort of coordinate conversion.
+
 The tool reads this file. Then, all the navigation entities that have coordinates within the specified boundary are sorted to be on top of the entities that are outside
 the boundary in the Airspace.xml file. 
 This way, in case of duplicates, vatsys will always be rendering the correct one specified in the Map, since it is the first occurance in the Airspace.xml, at the same time
